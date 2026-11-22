@@ -1,0 +1,102 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* Colores y fuentes de la marca Algoritmia (Figma "Algoritmia-team-page") */
+@theme {
+    --font-sans: 'Inter Variable', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+    --color-brand-bg: #000105;
+    --color-brand-ice: #eaf4fc;
+    --color-brand-cyan: #01bef9;
+    --color-brand-blue: #004785;
+    --color-brand-navy: #02264a;
+    --color-brand-card: #06101d;
+    --color-brand-card-top: #0b2f57;
+    --color-brand-line: #0f3a63;
+    --color-brand-soft: #b8e8fc;
+    --color-brand-muted: #4f7da3;
+}
+
+@layer base {
+    html {
+        background-color: var(--color-brand-bg);
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-brand-bg font-sans text-brand-ice antialiased;
+        margin: 0;
+    }
+
+    /* Foco visible al navegar con teclado */
+    :focus-visible {
+        outline: 2px solid var(--color-brand-cyan);
+        outline-offset: 3px;
+    }
+
+    ::selection {
+        background-color: var(--color-brand-cyan);
+        color: var(--color-brand-bg);
+    }
+}
+
+/* ---------- Animaciones ---------- */
+
+/* Entrada de los bloques de cada pantalla. Retraso con la variable --enter-delay. */
+@keyframes enter {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@utility animate-enter {
+    animation: enter 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--enter-delay, 0ms);
+}
+
+/* Cambio de pantalla: el nav queda fijo y el contenido se desvanece */
+@keyframes page-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes page-in {
+    from {
+        opacity: 0;
+    }
+}
+
+::view-transition-old(root) {
+    animation: page-out 0.22s ease-in both;
+}
+
+::view-transition-new(root) {
+    animation: page-in 0.32s ease-out both;
+}
+
+.site-nav {
+    view-transition-name: site-nav;
+}
+
+::view-transition-group(site-nav) {
+    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-enter {
+        animation: none;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
+}
